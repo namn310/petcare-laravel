@@ -18,11 +18,7 @@
                         position: 'bottom-right'
                         })
                     </script>
-                    {{-- <div class="alert alert-success alert-dismissible"
-                        style="width:20%;position: absolute;right:20px;top:100px">
-                        <p>{{ session('notice') }}</p>
-                        <button class="btn btn-close" data-bs-dismiss="alert"></button>
-                    </div> --}}
+                  
                     @endif
                     <div class="button-function d-flex justify-content-between mt-3 mb-4" style="width:70%">
 

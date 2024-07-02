@@ -82,7 +82,7 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="index.php?controller=user">
+                            <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.profile') }}">
                                 <i class="bi bi-gear"></i>
                                 <span>Cài đặt tài khoản</span>
                             </a>
@@ -91,8 +91,12 @@
                             <hr class="dropdown-divider">
                         </li>
 
-
-
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="register">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Tạo tài khoản</span>
+                            </a>
+                        </li>
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.logout') }}">
                                 <i class="bi bi-box-arrow-right"></i>
@@ -285,7 +289,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.category') }}">
-                    <i class="fa-brands fa-product-hunt"></i><span>Quản lý danh mục</span>
+                    <i class="fa-solid fa-book-open"></i><span>Quản lý danh mục</span>
                 </a>
             </li>
 
@@ -302,12 +306,17 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.book') }}">
-                    <i class="fa-regular fa-address-book"></i><span>Quản lý lịch hẹn</span>
+                    <i class="fa-solid fa-comments"></i></i><span>Quản lý lịch hẹn</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">
-                    <i class="fa-regular fa-address-book"></i><span>Quản lý tài khoản</span>
+                <a class="nav-link" href="{{ route('admin.manageAccount') }}">
+                    <i class="fa-solid fa-circle-user"></i><span>Quản lý tài khoản</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.banner') }}">
+                    <i class="fa-solid fa-camera-retro"></i><span>Quản lý Banner</span>
                 </a>
             </li>
 

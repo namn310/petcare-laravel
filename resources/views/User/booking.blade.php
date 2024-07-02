@@ -10,7 +10,7 @@
   <hr>
   <div class="row">
     <div class="col-4">
-      <img src="../Project-petcare-php/images/login-img/load.gif" class="w-100">
+      <img src="{{ asset('assets/img/load2.gif') }}" class="w-100">
 
     </div>
     <div class="col-8 align-items-left d-flex justify-content-left ps-5">
@@ -33,7 +33,7 @@
         <div class="form-group">
           <label for="Bosstype">Tên dịch vụ: </label>
           <input type="text" class="form-control" id="Bosstype" required name="dichvu"
-            placeholder="Tên gói muốn đăng ký ">
+            placeholder="Tên dịch vụ muốn đăng ký ">
 
         </div>
         <div class="form-group">
@@ -49,6 +49,10 @@
         <div class="Date">
           <p>Chọn lịch</p>
           <input name="date" class="form-control" placeholder="Nhập lịch" required type="text">
+        </div>
+        <div class="form-group">
+          <label for="Bossweight">Ghi chú (nếu có): </label>
+          <input type="text" class="form-control" id="Bossweight" required name="note" style="height:100px">
         </div>
         <div class="align-items-center d-flex justify-content-center">
           <button type="submit" class="btn btn-danger mt-3 submit_booking mb-2">

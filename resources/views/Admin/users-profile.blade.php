@@ -1,54 +1,35 @@
-<?php
-$this->layoutPath = "Layout.php";
-$conn = Connection::getInstance();
-$email = isset($_SESSION['admin_email']) ? $_SESSION['admin_email'] : '';
-$query = $conn->prepare("select * from admin where email= :email");
-$query->execute([':email' => $email]);
-foreach ($query->fetchAll() as $row) {
-  $id = $row->id;
-  $name = $row->name;
-}
-
-//changepass
-if (isset($_POST['changePassAdmin'])) {
-  $conn = Connection::getInstance();
-  $query = $conn->query("select * from admin where id=$id");
-  foreach ($query->fetchAll() as $a) echo $oldpass = $a->pass;
-  $old_pass = $_POST['currentPass'];
-  $new_pass = $_POST['newPass'];
-  $confirm_newpass = $_POST['confirmPass'];
-  $checkOldPass = md5($old_pass);
-
-  if ($checkOldPass == $oldpass && $new_pass != ' ' && $confirm_newpass != ' ' && $new_pass == $confirm_newpass) {
-    $newPass = md5($new_pass);
-    $query = $conn->prepare("update admin set pass=:_newpass");
-    $query->execute([":_newpass" => $newPass]);
-    if (isset($query)) {
-      echo ('<script>alert("Đổi mật khẩu thành công")</script>');
-    }
-  }
-  if (
-    $old_pass == ' ' || $new_pass == ' ' || $confirm_newpass == ' '
-  ) {
-    echo ('<script>alert("Vui lòng điền đầy đủ thông tin")</script>');
-  } else {
-    if ($checkOldPass != $oldpass) {
-      $loi_current_pass = "Mật khẩu không đúng";
-    } else {
-      if ($new_pass != $confirm_newpass) {
-        echo ('<script>alert("Mật khẩu không trùng khớp")</script>');
-      }
-    }
-  }
-}
-
-?>
-
+@extends('Admin.Layout')
+@section('content')
 <div class="pagetitle">
+  @if (session('status'))
+  <script>
+    $.toast({
+                                heading: 'Success',
+                                text: '{{ session('status') }}',
+                                showHideTransition: 'slide',
+                                icon: 'success',
+                                position: 'bottom-right'
+                                })
+  </script>
+
+  @endif
+
+  @if (session('error'))
+  <script>
+    $.toast({
+                                    heading: 'Error',
+                                    text: '{{ session('error') }}',
+                                    showHideTransition: 'slide',
+                                    icon: 'error',
+                                    position: 'bottom-right'
+                                    })
+  </script>
+
+  @endif
   <h1>Trang cá nhân</h1>
   <nav>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
       <li class="breadcrumb-item">Users</li>
     </ol>
   </nav>
@@ -61,8 +42,10 @@ if (isset($_POST['changePassAdmin'])) {
       <div class="card">
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-          <img src="/../Project-petcare-php/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-          <h2><?php echo $name ?></h2>
+          <img src="{{ asset('assets/img/PetCARE.png') }}" alt="Profile" class="rounded-circle">
+          <h2>
+            {{ Auth::user()->name }}
+          </h2>
 
           <div class="social-links mt-2">
             <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -90,19 +73,16 @@ if (isset($_POST['changePassAdmin'])) {
               <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Đổi mật
                 khẩu</button>
             </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile">Thông tin tài
+                khoản</button>
+            </li>
 
           </ul>
           <div class="tab-content pt-2">
-
-
-
-
-
             <div class="tab-pane fade pt-3" id="profile-settings">
-
               <!-- Settings Form -->
               <form>
-
                 <div class="row mb-3">
                   <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Thông báo Email</label>
                   <div class="col-md-8 col-lg-9">
@@ -142,20 +122,20 @@ if (isset($_POST['changePassAdmin'])) {
 
             <div class="tab-pane fade pt-3" id="profile-change-password">
               <!-- Change Password Form -->
-              <form method="post">
-
-                <?php
-                $loi_current_pass = isset($loi_current_pass) ? $loi_current_pass : "";
-                $loi_confirm_pass = isset($loi_confirm_pass) ? $loi_confirm_pass : "";
-                ?>
+              <form method="post" action="{{ route('admin.changePass') }}">
+                @csrf
+                @method('post')
                 <div class="row mb-3">
                   <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mật khẩu hiện tại</label>
                   <div class="col-md-8 col-lg-9">
                     <input name="currentPass" type="password" class="form-control" id="currentPassword">
-                  </div>
-                  <p id="pass_error" class="text-danger"><?php echo $loi_current_pass ?></p>
-                </div>
+                    @if (session('errorPass'))
+                    <small class="text-danger">{{ session('errorPass') }}</small>
+                    @endif
 
+                  </div>
+                  </p>
+                </div>
                 <div class="row mb-3">
                   <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Mật khẩu mới</label>
                   <div class="col-md-8 col-lg-9">
@@ -168,7 +148,7 @@ if (isset($_POST['changePassAdmin'])) {
                   <div class="col-md-8 col-lg-9">
                     <input name="confirmPass" type="password" class="form-control" id="renewPassword">
                   </div>
-                  <p id="confirm_pass_error" class="text-danger"><?php echo $loi_confirm_pass  ?></p>
+                  </p>
                 </div>
 
                 <div class="text-center">
@@ -177,7 +157,38 @@ if (isset($_POST['changePassAdmin'])) {
               </form><!-- End Change Password Form -->
 
             </div>
+            {{-- account detail --}}
+            <div class="tab-pane fade pt-3" id="profile">
 
+              <form method="post" action="{{ route('admin.updateProfile') }}">
+                @csrf
+                @method('post')
+                <div class="row mb-3">
+                  <label for="name" class="col-md-4 col-lg-3 col-form-label">Họ và tên</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="name" value="{{ Auth::user()->name }}" type="text" class="form-control" id="name"
+                      required>
+                    @error('name')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="email" type="email" value="{{ Auth::user()->email }}" class="form-control" id="email"
+                      required>
+                    @error('email')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button type="submit" name="changePassAdmin" class="btn btn-primary">Cập nhật thông tin</button>
+                </div>
+              </form><!-- End Change Password Form -->
+
+            </div>
           </div><!-- End Bordered Tabs -->
 
         </div>
@@ -192,6 +203,6 @@ if (isset($_POST['changePassAdmin'])) {
     $("#confirm_pass_error").hide();
   })
 </script>
-
+@endsection
 
 <!-- ======= Footer ======= -->

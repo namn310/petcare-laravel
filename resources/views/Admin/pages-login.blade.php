@@ -26,18 +26,30 @@
   <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
   <!-- Template Main CSS File -->
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+  {{-- toast message --}}
+  <script src="
+            https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.js
+            "></script>
+  <link href="
+            https://cdn.jsdelivr.net/npm/jquery-toast-plugin@1.3.2/dist/jquery.toast.min.css
+            " rel="stylesheet">
 </head>
 
 
 <body>
 
-  @if ( session('status') && session('alert'))
-  <div class="alert alert-{{ session('alert') }} alert-dismissible"
-    style="width:30%;position:absolute;right:0;top:20px">
-    <p>{{ session('status') }}</p>
-    <button class="btn btn-close" data-bs-dismiss="alert"></button>
-  </div> @endif
+  @if (session('status'))
+  <script>
+    $.toast({
+                            heading: 'Error',
+                            text: '{{ session('status') }}',
+                            showHideTransition: 'slide',
+                            icon: 'error',
+                            position: 'bottom-right'
+                            })
+  </script>
 
+  @endif
 
   <main>
     <div class="container">
@@ -90,7 +102,7 @@
                     <div class="col-12">
                       <p class="small mb-0">Don't you forgot account ? <a href="">Quên mật khẩu</a>
                       </p>
-                      <p>You don't have account ? <a href="register">Register</a></p>
+
                     </div>
                   </form>
 

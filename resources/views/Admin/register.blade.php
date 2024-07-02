@@ -63,37 +63,51 @@
                                 <div class="card-body">
 
                                     <div class="pt-4 pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
-                                        <p class="text-center small">Enter your personal details to create account</p>
+                                        <h5 class="card-title text-center pb-0 fs-4">Đăng ký tài khoản</h5>
+                                        <p class="text-center small">Nhập các thông tin bên dưới để tạo tài khoản</p>
                                     </div>
 
                                     <form class="row g-3 needs-validation" method="post"
                                         action="{{ route('admin.register') }}">
                                         @csrf
                                         <div class="col-12">
-                                            <label for="yourName" class="form-label">Your Name</label>
+                                            <label for="yourName" class="form-label">Họ tên</label>
                                             <input type="text" name="name" class="form-control" id="yourName" required>
-                                            <div class="invalid-feedback">Please, enter your name!</div>
+                                            @error('name')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="yourEmail" class="form-label">Your Email</label>
+                                            <label for="yourEmail" class="form-label">Email</label>
                                             <input type="email" name="email" class="form-control" id="yourEmail"
                                                 required>
-                                            <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                                            @error('email')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Password</label>
+                                            <label for="yourPassword" class="form-label">Mật khẩu</label>
                                             <input type="password" name="password" class="form-control"
                                                 id="yourPassword" required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
+                                            @error('password')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Nhập lại mật khẩu</label>
+                                            <input type="password" name="passwordConfirm" class="form-control"
+                                                id="yourPassword" required>
+                                            @error('passwordConfirm')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <button class="btn btn-primary w-100" type="submit">Create Account</button>
                                         </div>
                                         <div class="col-12">
-                                            <p class="small mb-0">Already have an account? <a href="login">Log
+                                            <p class="small mb-0">Nếu đã có tài khoản ? <a href="login">Log
                                                     in</a></p>
                                         </div>
                                     </form>

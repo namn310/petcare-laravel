@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title', 1024);
+            $table->string('name',100);
+            $table->string('type',50);
+            $table->string('name_service');
+            $table->string('goi');
+            $table->string('weight',50);
+            $table->string('date',50);
+            $table->string('note')->nullable();
             $table->timestamps();
             $table->unsignedInteger('idCus');
             $table->foreign('idCus')->references('id')->on('customer')->onDelete('cascade');
-            $table->unsignedInteger('idPro');
-            $table->foreign('idPro')->references('idPro')->on('products')->ondelete('cascade');
         });
     }
 
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Schema::dropIfExists('comments');
+        Schema::dropIfExists('bookings');
     }
 };

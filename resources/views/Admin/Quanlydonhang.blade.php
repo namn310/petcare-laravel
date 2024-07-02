@@ -4,7 +4,18 @@
   <h1>Danh Sách Đơn Hàng</h1>
 
 </div><!-- End Page Title -->
+@if (session('status'))
+<script>
+  $.toast({
+                        heading: 'Success',
+                        text: '{{ session('status') }}',
+                        showHideTransition: 'slide',
+                        icon: 'success',
+                        position: 'bottom-right'
+                        })
+</script>
 
+@endif
 <section class="section">
   <div class="row">
     <div class="search mt-4 mb-4 input-group" style="width:50%">
@@ -44,18 +55,56 @@
                 <td><button class="btn btn-danger">Chưa giao hàng</button> </td>
                 @endif
 
-
-
-
-
                 <td>
                   <a style="color:white;text-decoration:none"> <button data-bs-toggle="modal"
-                      data-bs-target="#deleteOrder" class="btn btn-danger"> <i class="bi bi-trash"></i></button></a>
+                      data-bs-target="#deleteOrder{{ $order->id }}" class="btn btn-danger"> <i
+                        class="bi bi-trash"></i></button></a>
+                  <!-- Modal xóa order -->
+                  <div class="modal fade" id="deleteOrder{{ $order->id }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <h5>Bạn có chắc chắn muốn xóa đơn hàng này không ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                          <a href="{{ route('admin.deleteOrder',['id'=>$order->id]) }}"> <button type="button"
+                              class="btn btn-primary">Xác
+                              nhận</button></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-
-                  <a href="index.php?controller=donhang&action=delivery&id="> <button data-bs-toggle="modal"
+                  <a> <button data-bs-toggle="modal" data-bs-target="#delivery{{ $order->id }}"
                       class="btn btn-success"><i class="fa-solid fa-truck"></i></button></a>
+                  <!-- Modal giao hàng -->
 
+                  <div class="modal fade" id="delivery{{ $order->id }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <h5>Xác nhận giao hàng</h5>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                          <a href="{{ route('admin.delivery',['id'=>$order->id]) }}">@csrf <button type="submit"
+                              class="btn btn-primary">Xác
+                              nhận</button></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <button class="btn btn-primary"><a style="color:white;text-decoration:none"
                       href="{{ route('admin.detail',['id'=>$order->id]) }}">Xem </a></button>
@@ -67,6 +116,7 @@
             </tbody>
           </table>
           <!-- End Table with stripped rows -->
+
           <ul class="pagination">
             <li class="page-item disabled"><a href="#" class="page-link">Trang</a></li>
           </ul>
@@ -79,58 +129,10 @@
 <!-- Button trigger modal -->
 
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <i class="fa-solid fa-check-double" style="color: #12ca27;"></i>
-      <strong class="me-auto ms-2">Thông báo</strong>
-      <small>Now</small>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-      Đơn hàng đã được giao !
-    </div>
-  </div>
-</div>
-<!-- Modal xóa order -->
-<div class="modal fade" id="deleteOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <h5>Bạn có chắc chắn muốn xóa đơn hàng này không ?</h5>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-        <a href="index.php?controller=donhang&action=delete&id="> <button type="button" class="btn btn-primary">Xác
-            nhận</button></a>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal giao hàng -->
 
-<div class="modal fade" id="delivery" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <h5>Xác nhận giao hàng</h5>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-        <a href="index.php?controller=donhang&action=delivery&id="> <button type="submit" class="btn btn-primary">Xác
-            nhận</button></a>
-      </div>
-    </div>
-  </div>
-</div>
+
+
+
 
 <!-- ======= Footer ======= -->
 

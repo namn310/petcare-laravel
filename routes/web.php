@@ -12,6 +12,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\User\AccountUserController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BannerController;
 //class user
 use App\Http\Controllers\User\HomeUserController;
 use App\Http\Controllers\User\ProductUserController;
@@ -84,16 +85,28 @@ Route::group(['namespace' => 'User', 'prefix' => ''], function () {
 Route::get('admin/login', function () {
     return view('Admin.pages-login');
 })->name('admin.login');
-Route::get('admin/register', function () {
-    return view('Admin.register');
-});
-Route::post('register', [UserController::class, 'store'])->name('admin.register');
+
 
 //post đăng nhập
 Route::post('login', [UserController::class, 'checkLogin'])->name('admin.checkLogin');
 //post đăng ký tài khoản
 Route::prefix('admin')->middleware('checkLogin::class')->group(function () {
+    //register
+    Route::get('register', function () {
+        return view('Admin.register');
+    });
+    //changepass
+    Route::post('changePass', [UserController::class, 'changePass'])->name('admin.changePass');
+    //updateProfile
+    Route::post('updateProfile', [UserController::class, 'updateProfile'])->name('admin.updateProfile');
+    Route::post('register', [UserController::class, 'store'])->name('admin.register');
+    //profile
+    Route::get('profile', [UserController::class, 'profile'])->name('admin.profile');
+    //Home
     Route::get('', [HomeController::class, 'index'])->name('admin.home');
+    //Quan ly account
+    Route::get('account', [UserController::class, 'index'])->name('admin.manageAccount');
+    Route::get('account/{id}', [UserController::class, 'destroy'])->name('admin.destroy');
     //log out
     Route::get('logout', [UserController::class, 'logOut'])->name('admin.logout');
     //product
@@ -106,13 +119,19 @@ Route::prefix('admin')->middleware('checkLogin::class')->group(function () {
     Route::put('product/change/{id}', [ProductController::class, 'update'])->name('admin.updateProduct');
     //customer
     Route::get('customer', [CustomerController::class, 'index'])->name('admin.customer');
+    //staff
     Route::get('staff', [StaffController::class, 'index'])->name('admin.staff');
+    Route::get('staff/create', [StaffController::class, 'create'])->name('admin.staffCreate');
+    Route::post('staff/store', [StaffController::class, 'store'])->name('admin.staffStore');
+    Route::get('satff/destroy/{id}', [StaffController::class, 'destroy'])->name('admin.staffDestroy');
+    Route::get('staff/edit/{id}', [StaffController::class, 'edit'])->name('admin.staffEdit');
+    Route::put('staff/edit/{id}', [StaffController::class, 'update'])->name('admin.staffUpdate');
     //category
     Route::get('category', [CategoryController::class, 'index'])->name('admin.category');
     Route::get('category/add', [CategoryController::class, 'create'])->name('admin.categoryForm');
     Route::post('category/add', [CategoryController::class, 'store'])->name('admin.createCat');
     Route::get('category/delete/{id}', [CategoryController::class, 'destroy'])->name('admin.deleteCat');
-    Route::put('category/update/{id}', [CategoryController::class, 'update'])->name('admin.updateCat');
+    Route::PUT('category/update/{id}', [CategoryController::class, 'update'])->name('admin.updateCat');
     //service
     Route::get('service', [ServiceController::class, 'index'])->name('admin.service');
     Route::get('service/add', [ServiceController::class, 'create'])->name('admin.serviceAddView');
@@ -123,8 +142,14 @@ Route::prefix('admin')->middleware('checkLogin::class')->group(function () {
     //order
     Route::get('order', [OrderController::class, 'index'])->name('admin.order');
     Route::get('order/detail/{id}', [OrderController::class, 'detail'])->name('admin.detail');
+    Route::get('order/delivery/{id}', [OrderController::class, 'delivery'])->name('admin.delivery');
+    Route::get('order/delete/{id}', [OrderController::class, 'destroy'])->name('admin.deleteOrder');
     //book
     Route::get('book', [BookingController::class, 'index'])->name('admin.book');
+    //banner
+    Route::get('banner', [BannerController::class, 'index'])->name('admin.banner');
+    Route::get('banner/create', [BannerController::class, 'create'])->name('admin.bannerCreate');
+    Route::post('banner/create', [BannerController::class, 'store'])->name('admin.bannerStore');
 });
 /*Route::get('/', function () {
     return view('welcome');

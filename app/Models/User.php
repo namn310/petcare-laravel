@@ -64,12 +64,31 @@ class User extends Authenticatable
     //Tạo mới tài khoản
     public function createUser($request)
     {
-
+        $request->validate([
+            'name' => [
+                'regex:/^([a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)((\s{1}[a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$/'
+            ],
+            'email' => [
+                'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/'
+            ],
+            'password' => [
+                'regex:/^[a-zA-Z0-9!@#$%^&*]{6,}$/'
+            ],
+            'passwordConfirm' => 'same:password'
+        ], [
+            'name.regex' => 'Vui lòng kiểm tra lại họ tên',
+            'email.regex' => 'Vui lòng kiểm tra lại Email',
+            'password.regex' => 'Mật khẩu dài tối thiểu 6 ký tự',
+            'passwordConfirm.same' => 'Mật khẩu không trùng khớp'
+        ]);
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password'))
         ]);
         $user->save();
+    }
+    public function changePass(){
+        
     }
 }

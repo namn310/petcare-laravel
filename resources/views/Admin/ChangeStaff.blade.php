@@ -18,37 +18,37 @@
       <li class="breadcrumb-item active" aria-current="page">Chi tiết nhân viên</li>
     </ol>
   </nav>
-
+  @foreach ($staff as $row )
   <!-- End Page Title -->
-  <form id="AddForm" class="row mt-4" method="post" action="{{ route('admin.staffStore') }}"
+  <form id="AddForm" class="row mt-4" method="post" action="{{ route('admin.staffUpdate',['id'=>$row->id]) }}"
     enctype="multipart/form-data"
     style="background-color: white;padding:20px;border-radius:20px;box-shadow: 2px 2px 2px #FFCC99;">
     @csrf
-    @method('POST')
+    @method('PUT')
     <div class="form-group col-md-4">
       <label style="font-weight: bolder;" class="control-label">Họ và tên</label>
-      <input class="form-control" id="nameNV" name="nameNV" type="text" required>
+      <input class="form-control" id="nameNV" value="{{ $row->name }}" name="nameNV" type="text" required>
       @error('nameNV')
       <small class="text-danger">{{ $message }}</small>
       @enderror
     </div>
     <div class="form-group col-md-4">
       <label style="font-weight: bolder;" class="control-label">Địa chỉ email</label>
-      <input class="form-control" id="emailNV" name="emailNV" type="text" required>
+      <input class="form-control" id="emailNV" value="{{ $row->email }}" name="emailNV" type="text" required>
       @error('emailNV')
       <small class="text-danger">{{ $message }}</small>
       @enderror
     </div>
     <div class="form-group col-md-4">
       <label style="font-weight: bolder;" class="control-label mt-3">Địa chỉ thường trú</label>
-      <input class="form-control" id="localNV" name="localNV" type="text" required>
+      <input class="form-control" id="localNV" value="{{ $row->local }}" name="localNV" type="text" required>
       @error('localNV')
       <small class="text-danger">{{ $message }}</small>
       @enderror
     </div>
     <div class="form-group  col-md-4">
       <label style="font-weight: bolder;" class="control-label mt-3">Số điện thoại</label>
-      <input class="form-control" id="phoneNV" name="phoneNV" type="text" required>
+      <input class="form-control" id="phoneNV" value="{{ $row->phone }}" name="phoneNV" type="text" required>
       @error('phoneNV')
       <small class="text-danger">{{ $message }}</small>
       @enderror
@@ -57,14 +57,14 @@
     <div class="form-group  col-md-3">
       <label style="font-weight: bolder;" style="font-weight: bolder;" class="control-label mt-3">Ngày tháng năm
         sinh</label>
-      <input class="form-control" id="dateNV" name="dateNV" type="date" required>
+      <input class="form-control" id="dateNV" value="{{ $row->date }}" name="dateNV" type="date" required>
       @error('dateNV')
       <small class="text-danger">{{ $message }}</small>
       @enderror
     </div>
     <div class="form-group col-md-3">
       <label style="font-weight: bolder;" class="control-label mt-3">Số CMND/CCCD</label>
-      <input class="form-control" name="CMND" id="CMND" type="text" required>
+      <input class="form-control" name="CMND" value="{{ $row->CMND }}" id="CMND" type="text" required>
       @error('CMND')
       <small class="text-danger">{{ $message }}</small>
       @enderror
@@ -73,7 +73,7 @@
     <div class="form-group col-md-3">
       <label style="font-weight: bolder;" class="control-label mt-3">Giới tính</label>
       <select class="form-control" name="sex" id="sex" id="exampleSelect2" required>
-        <option>Chọn giới tính</option>
+        <option>{{ $row->sex }}</option>
         <option>Nam</option>
         <option>Nữ</option>
         <option>Khác</option>
@@ -85,7 +85,7 @@
 
     <div class="form-group  col-md-3">
       <label style="font-weight: bolder;" class="control-label mt-3">Chức vụ</label>
-      <input class="form-control" name="chucvu" required>
+      <input class="form-control" value="{{ $row->sex }}" name="chucvu" required>
       @error('chucvu')
       <small class="text-danger">{{ $message }}</small>
       @enderror
@@ -94,7 +94,8 @@
 
     <div class="form-group col-md-12">
       <label style="font-weight: bolder;" class="control-label mt-3">Ảnh 3x4 nhân viên</label>
-      <input class="form-control" style="width:50%" type="file" id="uploadImgNV" name="imgNV" required>
+      <input class="form-control" style="width:50%" type="file" id="uploadImgNV" name="imgNV">
+      <img class="img-fluid mt-2" style="max-width:200px" src="{{ asset('assets/img-nhanvien/'.$row->image) }}">
       @error('imgNV')
       <small class="text-danger">{{ $message }}</small>
       @enderror
@@ -103,6 +104,7 @@
     <a style="text-decoration:none;color:white"> <button class="btn btn-success mt-4" type="submit" id="addbutton"
         style="width:10%">Thêm</button></a>
   </form>
+  @endforeach
 </div>
 
 

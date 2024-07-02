@@ -3,7 +3,7 @@
 <div class="pagetitle">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb" style="font-size: 22px;">
-            <li class="breadcrumb-item"><a href="index.php?controller=donhang">Danh sách đơn hàng</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.order') }}">Danh sách đơn hàng</a></li>
             <li class="breadcrumb-item active" aria-current="page">Xem chi tiết</li>
         </ol>
     </nav>
@@ -14,7 +14,7 @@
     <div class="p-4">
         <div class="name d-inline-block">
             <span>
-                <p>Họ và tên: <b>{{ $order->getCus($order->id) }} </b></p>
+                <p>Họ và tên: <b>{{ $order->getCus($order->idCus) }} </b></p>
             </span>
         </div>
         <div class="local ">
@@ -24,7 +24,7 @@
         </div>
         <div class="phone mt-4">
             <span>
-                <p>Số điện thoại: <b> {{ $order->getPhone($order->id) }}</b></p>
+                <p>Số điện thoại: <b> {{ $order->getPhone($order->idCus) }}</b></p>
             </span>
         </div>
         <div class="date mt-4">
@@ -34,11 +34,15 @@
         </div>
         <div class="local mt-4">
             <span>
-                <p>Trạng thái :</p>
-
+                <p>Trạng thái </p>
+                @if ($order->status >0)
                 <button class="btn btn-success">Đã giao hàng</button>
-
+                @else
                 <button class="btn btn-danger">Chưa giao hàng</button>
+                @endif
+
+
+
 
             </span>
         </div>
@@ -75,11 +79,11 @@
                     @if ($row->getProductDiscount($row->idPro)>0)
                     <td>
                         {{ number_format(($row->number * ($row->price - ($row->price *
-                        ($row->getProductDiscount($row->idPro) / 100))))) }}
+                        ($row->getProductDiscount($row->idPro) / 100))))) }}đ
                     </td>
                     @else
                     <td>
-                        {{ number_format($row->number * $row->price) }}
+                        {{ number_format($row->number * $row->price) }}đ
                     </td>
                     @endif
                 </tr>
@@ -87,7 +91,7 @@
 
             </table>
         </div>
-        <p class="text-end"><b>Tổng tiền:</b></p>
+        <h4 class="text-end text-danger"><b>Tổng tiền: {{ number_format( $totalPrice) }}đ</b></h4>
     </div>
     @endforeach
 </div>

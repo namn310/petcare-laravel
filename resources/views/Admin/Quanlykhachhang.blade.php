@@ -20,7 +20,7 @@
                             <tr class="table-primary">
                                 <th>ID khách hàng</th>
                                 <th>Họ và tên</th>
-                                {{-- <th>SĐT</th> --}}
+                                <th>SĐT</th>
                                 <th>Gmail</th>
                             </tr>
                         </thead>
@@ -29,7 +29,7 @@
                                 @foreach ($customer as $row )
                                 <td>{{ $row->id }}</td>
                                 <td>{{ $row->name }}</td>
-                                {{-- <td>{{ $row->phone }}</td> --}}
+                                <td>{{ $row->phone }}</td>
                                 <td>{{ $row->email }}</td>
                                 @endforeach
                             </tr>
