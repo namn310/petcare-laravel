@@ -16,7 +16,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = product::all();
+        // $productPag = product::paginate(8);
+        $product = product::paginate(8);
         $category = category::all();
         return view('Admin.Quanlysanpham', ['product' => $product, 'category' => $category]);
     }
@@ -37,9 +38,33 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // $file = $request->file('imagepro');
+        // dd($file);
+        $category = DB::table('categories')->select('idCat')->where('name', $request->input('danhmucAddpro'))->get();
         $product = new product();
-        $product->create($request);
-        return redirect(route('admin.product'))->with('notice', 'Thêm thành công');
+        $product->namePro = $request->input('namepro');
+        $product->description = $request->input('mota');
+        $product->count = $request->input('countpro');
+        $product->hot = $request->input('hotPro');
+        $product->cost = $request->input('giabanpro');
+        $product->discount = $request->input('discount');
+        foreach ($category as $row) {
+            $product->idCat = $row->idCat;
+        }
+        $product->save();
+        if ($files = $request->file('imagepro')) {
+            foreach ($files as $file => $value) {
+                $extension = $value->getClientOriginalExtension(); //lay tep mo rong cua file
+                $filename =  $value . '-' . time() . '.' . $extension;
+                $value->move('assets/img-add-pro/', $filename);
+                $imageProduct = ImageProduct::create([
+                    'idPro' => $product->idPro,
+                    'image' => $filename
+                ]);
+                $imageProduct->save();
+            }
+        }
+        return redirect(route('admin.product'))->with('notice', 'Thêm sản phẩm thành công');
     }
     public function getCategory($id)
     {

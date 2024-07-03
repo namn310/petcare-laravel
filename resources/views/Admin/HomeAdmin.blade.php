@@ -24,7 +24,7 @@
         </div>
         <div class="widget-status">
           <h4 class="text-danger">Tổng khách hàng</h4>
-          <p><b>56 khách hàng</b></p>
+          <p><b>{{ $CustomerTotal }} khách hàng</b></p>
           <p class="info-tong">Tổng số khách hàng được quản lý.</p>
         </div>
       </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="widget-status">
           <h4 class="text-danger">Tổng sản phẩm</h4>
-          <p><b> sản phẩm</b></p>
+          <p><b>{{ $productTotal }} sản phẩm</b></p>
           <p class="info-tong">Tổng số sản phẩm được quản lý.</p>
         </div>
       </div>
@@ -46,8 +46,7 @@
         </div>
         <div class="widget-status">
           <h4 class="text-danger">Tổng đơn hàng</h4>
-          <p><b> đơn hàng</b></p>
-          <p class="info-tong">Tổng số khách hàng được quản lý.</p>
+          <p><b> {{ $orderTotal }} đơn hàng</b></p>
         </div>
       </div>
       <div class="widget d-flex "
@@ -57,7 +56,7 @@
         </div>
         <div class="widget-status">
           <h4 class="text-danger">Sắp hết hàng</h4>
-          <p><b> Sản phẩm</b></p>
+          <p><b>{{ $productOutTotal }} Sản phẩm</b></p>
           <p class="info-tong">Số sản phẩm cần nhập thêm.</p>
         </div>
       </div>

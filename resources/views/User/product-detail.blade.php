@@ -12,6 +12,14 @@
       margin-top: 100px;
     }
   }
+
+  .product-detail-img {
+    flex: 1;
+  }
+
+  .product-detail-intro {
+    flex: 1;
+  }
 </style>
 <script>
   $(document).ready(function(){
@@ -52,50 +60,52 @@
           <button style="position:absolute;top:-10px;left:40px" class="btn btn-white "><i
               class="fa-solid fa-angle-up fa-xl"></i></button>
         </div>
-        <div class="product-detail-img ms-2">
-          {{-- Ảnh sản phẩm --}}
-          <img class="img-float main-img-product" id="main-img-product"
-            style="max-width:800px;max-height:600px;border:1px solid  #EA9E1E;border-radius:5px"
-            src="{{ asset('assets/img-add-pro/'.$productMainImg) }}">
-        </div>
-        <div class="product-detail-intro ms-5">
-          <p>
-            {{-- Tên sản phẩm --}}
-          <h4>
-            {{ $row->namePro }}
-          </h4>
-          </p>
-          {{-- Mã sản phẩm --}}
-          <p><strong>Mã sản phẩm : </strong>
-            {{ $row->idPro }}
-          </p>
-          <p><strong>Lượt mua: </strong>324</p>
-          <span class="rating secondary-font">
-            <i class="fa-solid fa-star text-warning"></i>
-            <i class="fa-solid fa-star text-warning"></i>
-            <i class="fa-solid fa-star text-warning"></i>
-            <i class="fa-solid fa-star text-warning"></i>
-            <i class="fa-solid fa-star text-warning"></i>
-            5.0</span>
-          @if (!$row->discount>0) <p class="card-text text-danger">Giá: {{ $row->cost }}</p>
-          @else
-          <p>
-            <span>Giá gốc:
-              <i class="card-text text-danger text-decoration-line-through">{{ number_format( $row->cost) }} đ</i>
-            </span>
-          </p>
-          <p class="card-text text-danger">{{ number_format($row->cost - ($row->cost * $row->discount) / 100); }}đ</p>
-          @endif
+        <div class="d-flex justify-content-between">
+          <div class="product-detail-img ms-2">
+            {{-- Ảnh sản phẩm --}}
+            <img class="img-float main-img-product" id="main-img-product"
+              style="max-width:800px;max-height:600px;border:1px solid  #EA9E1E;border-radius:5px"
+              src="{{ asset('assets/img-add-pro/'.$productMainImg) }}">
+          </div>
+          <div class="product-detail-intro ms-5">
+            <p>
+              {{-- Tên sản phẩm --}}
+            <h4>
+              {{ $row->namePro }}
+            </h4>
+            </p>
+            {{-- Mã sản phẩm --}}
+            <p><strong>Mã sản phẩm : </strong>
+              {{ $row->idPro }}
+            </p>
+            <p><strong>Lượt mua: </strong>324</p>
+            <span class="rating secondary-font">
+              <i class="fa-solid fa-star text-warning"></i>
+              <i class="fa-solid fa-star text-warning"></i>
+              <i class="fa-solid fa-star text-warning"></i>
+              <i class="fa-solid fa-star text-warning"></i>
+              <i class="fa-solid fa-star text-warning"></i>
+              5.0</span>
+            @if (!$row->discount>0) <p class="card-text text-danger">Giá: {{ $row->cost }}</p>
+            @else
+            <p>
+              <span>Giá gốc:
+                <i class="card-text text-danger text-decoration-line-through">{{ number_format( $row->cost) }} đ</i>
+              </span>
+            </p>
+            <p class="card-text text-danger">{{ number_format($row->cost - ($row->cost * $row->discount) / 100); }}đ</p>
+            @endif
 
-          <!-- Button trigger modal -->
-          <button type="button" style="width:20% ;margin-left:10px;margin-bottom:20px" id="cartSucess"
-            class="btn btn-danger mt-3">
-            <a style="text-decoration:none;color:white" href="{{ route('user.add',['id'=>$row->idPro]) }}">
-              Mua
-            </a>
+            <!-- Button trigger modal -->
+            <button type="button" style="width:20% ;margin-left:10px;margin-bottom:20px" id="cartSucess"
+              class="btn btn-danger mt-3">
+              <a style="text-decoration:none;color:white" href="{{ route('user.add',['id'=>$row->idPro]) }}">
+                Mua
+              </a>
 
-          </button>
+            </button>
 
+          </div>
         </div>
       </div>
 

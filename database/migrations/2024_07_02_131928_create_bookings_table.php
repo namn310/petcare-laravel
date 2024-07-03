@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('weight',50);
             $table->string('date',50);
             $table->string('note')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
             $table->unsignedInteger('idCus');
             $table->foreign('idCus')->references('id')->on('customer')->onDelete('cascade');

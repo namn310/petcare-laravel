@@ -18,7 +18,7 @@
                         position: 'bottom-right'
                         })
                     </script>
-                  
+
                     @endif
                     <div class="button-function d-flex justify-content-between mt-3 mb-4" style="width:70%">
 
@@ -121,13 +121,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a href="#" class="page-link">Trang</a></li>
-
-                    </ul>
                 </div>
             </div>
-
+            {{ $product->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </div>

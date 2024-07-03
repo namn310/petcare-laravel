@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\home;
 use Illuminate\Http\Request;
+use App\Models\product;
+use App\Models\Booking;
+use App\Models\User\Customer;
+use App\Models\User\Order;
 
 class HomeController extends Controller
 {
@@ -12,7 +16,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('Admin.HomeAdmin');
+        $CustomerTotal = Customer::all()->count();
+        $productTotal = product::all()->count();
+        $productOutTotal = product::select('idPro')->where('count', '<=', 0)->get()->count();
+        $orderTotal = Order::all()->count();
+        return view('Admin.HomeAdmin', ['orderTotal' => $orderTotal, 'productTotal' => $productTotal, 'CustomerTotal' => $CustomerTotal, 'productOutTotal' => $productOutTotal]);
     }
 
     /**

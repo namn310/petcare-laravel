@@ -165,15 +165,16 @@ class AccountUserController extends Controller
                 'email.regex' => 'Email không hợp lệ'
             ]
         );
-        $customer = Customer::find($id);
-        $customer->name = $request->input('name');
-        $customer->phone = $request->input('phone');
-        $customer->email = $request->input('email');
+        try {
+            $customer = Customer::find($id);
+            $customer->name = $request->input('name');
+            $customer->phone = $request->input('phone');
+            $customer->email = $request->input('email');
 
-        if ($request->hasFile('avtUser')) {
-            if (File::exists('assets/img-avt-customer', $customer->image)) {
-                File::delete('assets/img-avt-customer', $customer->image);
-            } else {
+            if ($request->hasFile('avtUser')) {
+                if (File::exists('assets/img-avt-customer', $customer->image)) {
+                    File::delete('assets/img-avt-customer', $customer->image);
+                }
                 $file = $request->file('avtUser');
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $extension;
@@ -181,9 +182,11 @@ class AccountUserController extends Controller
                 $file->move('assets/img-avt-customer', $filename);
                 $customer->image = $filename;
             }
-        }
 
-        $customer->update();
+            $customer->update();
+        } catch (Throwable) {
+            return redirect('infor')->with('notice', 'Cập nhật thông tin thất bại !');
+        }
         return redirect('infor')->with('notice', 'Cập nhật thông tin thành công !');
     }
 }

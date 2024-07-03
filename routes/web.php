@@ -19,8 +19,8 @@ use App\Http\Controllers\User\ProductUserController;
 use App\Http\Controllers\User\ServiceUserController;
 use App\Http\Controllers\User\CommentController;
 use App\Http\Controllers\User\checkOutController;
-
-
+use App\Http\Controllers\User\BookingUserController;
+use App\Http\Controllers\User\OrderUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,19 +38,34 @@ Route::get('test', [TestController::class, 'index'])->name('User.test');
 Route::post('test', [TestController::class, 'store'])->name('test.store');
 //user view
 Route::group(['namespace' => 'User', 'prefix' => ''], function () {
+    //phải đăng nhập mới được truy cập
+    Route::middleware('checkLoginUser')->group(function () {
+        //infor user
+        Route::get('infor', [AccountUserController::class, 'inforUser'])->name('user.infor');
+        Route::PUT('infor/{id}', [AccountUserController::class, 'updateInfor'])->name('user.updateInfor');
+        //Change pass
+        Route::get('changePass', [AccountUserController::class, 'changePassForm'])->name('user.changePassForm');
+        Route::put('changePass', [AccountUserController::class, 'ChangePass'])->name('user.changePass');
+        //log out
+        Route::get('logout', [AccountUserController::class, 'logOut'])->name('user.logout');
+        //booking
+        Route::post('book', [BookingController::class, 'store'])->name('user.bookCreate');
+        //cart checkout
+        Route::get('cart/checkout', [CartController::class, 'checkout'])->name('user.checkout');
+        Route::post('cart/checkout', [checkOutController::class, 'confirmCheckOut'])->name('user.confirmCheckOut');
+        //follow orrder
+        Route::get('order', [OrderUserController::class, 'index'])->name('user.orderView');
+        Route::put('order/updateBook/{id}', [BookingController::class, 'update'])->name('user.updateBooking');
+        Route::get('order/destroyBook/{id}', [BookingController::class, 'destroy'])->name('user.destroyBook');
+    });
+
     Route::get('loginUser', [AccountUserController::class, 'index'])->name('user.login');
     // Route::post('login', [AccountUserController::class, 'login'])->name('user.checkAccount');
     Route::post('loginUser', [AccountUserController::class, 'loginCheck'])->name('user.checkLogin');
-    //log out
-    Route::get('logout', [AccountUserController::class, 'logOut'])->name('user.logout');
+
     Route::get('registerUser', [AccountUserController::class, 'registerForm'])->name('user.register');
     Route::post('registerUser', [AccountUserController::class, 'register'])->name('user.registAccount');
-    //infor user
-    Route::get('infor', [AccountUserController::class, 'inforUser'])->name('user.infor');
-    Route::PUT('infor/{id}', [AccountUserController::class, 'updateInfor'])->name('user.updateInfor');
-    //Change pass
-    Route::get('changePass', [AccountUserController::class, 'changePassForm'])->name('user.changePassForm');
-    Route::put('changePass', [AccountUserController::class, 'ChangePass'])->name('user.changePass');
+
     Route::get('/', [HomeUserController::class, 'index'])->name('user.home');
     Route::get('about', function () {
         return view('User.about');
@@ -61,10 +76,9 @@ Route::group(['namespace' => 'User', 'prefix' => ''], function () {
     Route::get('product/detail/{id}', [ProductUserController::class, 'getDetail'])->name('user.productDetail');
     //comment
     Route::post('product/detail/{id}', [CommentController::class, 'store'])->name('user.comment');
-
-    Route::get('book', function () {
-        return view('User.booking');
-    })->name('user.book');
+    //booking
+    Route::get('book', [BookingUserController::class, 'index'])->name('user.book');
+    //contact
     Route::get('contact', function () {
         return view('User.contact');
     })->name('user.contact');
@@ -74,9 +88,6 @@ Route::group(['namespace' => 'User', 'prefix' => ''], function () {
     Route::get('cart/destroy', [CartController::class, 'destroyCart'])->name('user.destroyCart');
     Route::post('cart/update', [CartController::class, 'update'])->name('user.cartupdate');
     Route::get('cart/delete/{id}', [CartController::class, 'delete'])->name('user.delete');
-    //cart checkout
-    Route::get('cart/checkout', [CartController::class, 'checkout'])->name('user.checkout');
-    Route::post('cart/checkout', [checkOutController::class, 'confirmCheckOut'])->name('user.confirmCheckOut');
 });
 
 
@@ -146,6 +157,10 @@ Route::prefix('admin')->middleware('checkLogin::class')->group(function () {
     Route::get('order/delete/{id}', [OrderController::class, 'destroy'])->name('admin.deleteOrder');
     //book
     Route::get('book', [BookingController::class, 'index'])->name('admin.book');
+    Route::get('book/detail/{id}', [BookingController::class, 'detail'])->name('admin.bookDetail');
+    Route::get('book/update/{id}', [BookingController::class, 'confirmBook'])->name('admin.bookConfirm');
+    Route::get('book/cancel/{id}', [BookingController::class, 'UnConfirmBook'])->name('admin.bookUnConfirm');
+
     //banner
     Route::get('banner', [BannerController::class, 'index'])->name('admin.banner');
     Route::get('banner/create', [BannerController::class, 'create'])->name('admin.bannerCreate');

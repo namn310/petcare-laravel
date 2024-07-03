@@ -12,6 +12,7 @@
                           })
 </script>
 @endif
+
 <form method="post" action="{{ route('user.updateInfor',['id'=>Auth('customer')->user()->id]) }}"
   enctype="multipart/form-data">
   @csrf

@@ -4,7 +4,28 @@
     <h1>Danh Sách lịch hẹn</h1>
 
 </div><!-- End Page Title -->
-
+@if (session('notice'))
+<script>
+    $.toast({
+                        heading: 'Success',
+                        text: '{{ session('notice') }}',
+                        showHideTransition: 'slide',
+                        icon: 'success',
+                        position: 'bottom-right'
+                        })
+</script>
+@endif
+@if (session('error'))
+<script>
+    $.toast({
+                        heading: 'Error',
+                        text: '{{ session('error') }}',
+                        showHideTransition: 'slide',
+                        icon: 'error',
+                        position: 'bottom-right'
+                        })
+</script>
+@endif
 <section class="section">
     <div class="row">
         <div class="search mt-4 mb-4 input-group" style="width:50%">
@@ -23,7 +44,6 @@
                             <tr>
                                 <th> <b>I</b>D lịch hẹn </th>
                                 <th>Tên khách hàng </th>
-                                <th>Số điện thoại</th>
                                 <th>Ngày hẹn</th>
                                 <th>Dịch vụ</th>
                                 <th>Tình trạng</th>
@@ -32,35 +52,116 @@
                         </thead>
 
                         <tbody id="table-order">
-
+                            @foreach ($book as $row )
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{ $row->id }}</td>
+                                <td>{{ $row->getCus($row->idCus) }}</td>
+                                <td>{{ $row->date }}</td>
+                                <td>{{ $row->goi }}</td>
+                                @if ($row->status > 0)
+                                <td><button class="btn btn-success">Đã duyệt</button></td>
+                                @else
+                                <td><button class="btn btn-danger">Chưa duyệt</button></td>
+                                @endif
 
-
-                                <th><button class="btn btn-danger">Chưa duyệt</button></th>
-
-                                <td class="d-flex justify-content-between flex-wrap">
+                                @if ($row->status > 0)
+                                       <td class="d-flex justify-content-between flex-wrap">
+                                    {{-- detail book --}}
                                     <a style="text-decoration:none"
-                                        href="index.php?controller=book&action=detail&id="><button
+                                        href="{{ route('admin.bookDetail',['id'=>$row->id]) }}"><button
                                             class="btn btn-secondary"><i class="fa-solid fa-bars"></i></button></a>
+                                    {{-- confirm book --}}
+                                    <a style="text-decoration:none" class="ms-2"><button data-bs-toggle="modal"
+                                            data-bs-target="#confirm{{ $row->id }}" class="btn btn-primary"><i
+                                                class="fa-solid fa-check"></i></button></a>
+                                    {{-- modal confirm book --}}
+                                    <div class="modal fade" id="confirm{{ $row->id }}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5>Xác nhận lịch hẹn</h5>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                    @csrf
+                                                    <a href="{{ route('admin.bookConfirm',['id'=>$row->id]) }}"> <button
+                                                            type="submit" class="btn btn-primary">Xác nhận</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- unconfirm book --}}
                                     <a style="text-decoration:none" class="ms-2"
-                                        href="index.php?controller=book&action=confirm&id="><button
-                                            class="btn btn-primary"><i class="fa-solid fa-check"></i></button></a>
-                                    <a style="text-decoration:none" class="ms-2"
-                                        href="index.php?controller=book&action=unconfirm&id="><button
-                                            class="btn btn-warning"><i
+                                       ><button
+                                            class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#unconfirm{{ $row->id }}"><i
                                                 class="fa-solid fa-circle-notch"></i></button></a>
-                                    <button class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteBook"><i class="fa-solid fa-xmark"></i></button>
-
-
+                                    {{-- Modal unconfirm book --}}
+                                    <div class="modal fade" id="unconfirm{{ $row->id }}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5>Xác nhận hủy lịch hẹn</h5>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                    @csrf
+                                                    <a href="{{ route('admin.bookUnConfirm',['id'=>$row->id]) }}"> <button
+                                                            type="submit" class="btn btn-primary">Xác nhận</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
+                                @else
+                                   <td class="d-flex justify-content-around flex-wrap">
+                                        {{-- detail book --}}
+                                        <a style="text-decoration:none" href="{{ route('admin.bookDetail',['id'=>$row->id]) }}"><button
+                                                class="btn btn-secondary"><i class="fa-solid fa-bars"></i></button></a>
+                                        {{-- confirm book --}}
+                                        <a style="text-decoration:none" class="ms-2"><button data-bs-toggle="modal" data-bs-target="#confirm{{ $row->id }}"
+                                                class="btn btn-primary"><i class="fa-solid fa-check"></i></button></a>
+                                        {{-- modal confirm book --}}
+                                        <div class="modal fade" id="confirm{{ $row->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h5>Xác nhận lịch hẹn</h5>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                                        @csrf
+                                                        <a href="{{ route('admin.bookConfirm',['id'=>$row->id]) }}"> <button type="submit"
+                                                                class="btn btn-primary">Xác nhận</button></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                   </td> 
+                                @endif
+                             
 
                             </tr>
-
+                            @endforeach
                         </tbody>
                     </table>
                     <!-- End Table with stripped rows -->

@@ -16,7 +16,7 @@
 
     function checkName() {
         var name_correct =
-            /^[A-Za-z0-9\@#$%^&*()\sAÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬBCDĐEÈẺẼÉẸÊỀỂỄẾỆFGHIÌỈĨÍỊJKLMNOÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢPQRSTUÙỦŨÚỤƯỪỬỮỨỰVWXYỲỶỸÝỴZaàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz]+$/;
+            /^[A-Za-z0-9\/@#$%^&*()\sAÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬBCDĐEÈẺẼÉẸÊỀỂỄẾỆFGHIÌỈĨÍỊJKLMNOÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢPQRSTUÙỦŨÚỤƯỪỬỮỨỰVWXYỲỶỸÝỴZaàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz]+$/;
         var name = document.getElementById("namepro");
         var name_val = document.getElementById("namepro").value;
         if (name_val == "" || name_correct.test(name_val) == false) {
@@ -186,13 +186,12 @@
             </div>
             <div class="form-group col-md-12">
                 <label style="font-weight: bolder;" class="control-label mt-3">Ảnh sản phẩm</label>
-                <input class="form-control" onclick="checkImg()" multiple onmouseover="checkImg()" onchange="checkImg()"
-                    id="imagepro" name="imagepro[]" style="width:30%" type="file">
+                <input class="form-control" multiple id="imagepro" name="imagepro[]" style="width:30%" type="file">
             </div>
 
 
-            <button class="btn btn-success mt-4 ms-2" onclick="AddPro()" type="submit" id="buttonAddPro"
-                style="width:10%" value="Thêm" name="addproduct"> Thêm
+            <button class="btn btn-success mt-4 ms-2" type="submit" id="buttonAddPro" style="width:10%" value="Thêm"
+                name="addproduct"> Thêm
             </button>
         </form>
 

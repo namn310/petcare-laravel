@@ -18,7 +18,7 @@
         <div class="product-box">
             <div class="product-inner-box ">
                 <div class="icons d-flex justify-content-end">
-                    <a href="" class="text-decoration-none text-dark"><i class="fa-solid fa-heart"
+                    <a class="text-decoration-none text-dark"><i class="fa-solid fa-heart"
                             style="color: #ec0e0e;"></i></a>
 
                 </div>

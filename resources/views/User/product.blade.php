@@ -23,7 +23,7 @@
 <div class=" container-fluid pdt">
   <div class="row">
     <div class="col-3 sm">
-      <a href="{{ route('user.destroyCart') }}">click</a>
+      {{-- <a href="{{ route('user.destroyCart') }}">click</a> --}}
       <h3 class="text-center mb-2">Danh mục sản phẩm</h3>
       <ul class="category list-group">
         <!-- Lấy dữ liệu bảng danh mục xuất ra danh mục -->

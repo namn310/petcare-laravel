@@ -4,7 +4,7 @@
 <div class="pagetitle">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb" style="font-size: 22px;">
-            <li class="breadcrumb-item"><a href="index.php?controller=danhmuc">Quản lý danh mục</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.category') }}">Quản lý danh mục</a></li>
             <li class="breadcrumb-item active" aria-current="page">Thêm danh mục</li>
         </ol>
     </nav>

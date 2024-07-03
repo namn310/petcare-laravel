@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\product;
+use App\Models\Booking;
 
 class TestController extends Controller
 {
@@ -31,6 +32,7 @@ class TestController extends Controller
     }
     public function store(Request $request)
     {
-        dd($request);
+        $booking = Booking::select()->get()->count();
+        dd($booking);
     }
 }

@@ -1,9 +1,30 @@
 @extends('User.LayoutTrangChu')
 @section('content')
 <!-- main images -->
-<div class="main_img mt-2">
+@if (session('notice'))
+<script>
+  $.toast({
+                        heading: 'Success',
+                        text: '{{ session('notice') }}',
+                        showHideTransition: 'slide',
+                        icon: 'success',
+                        position: 'bottom-right'
+                        })
+</script>
 
-</div>
+@endif
+@if (session('error'))
+<script>
+  $.toast({
+                        heading: 'Error',
+                        text: '{{ session('error') }}',
+                        showHideTransition: 'slide',
+                        icon: 'error',
+                        position: 'bottom-right'
+                        })
+</script>
+
+@endif
 <!-- Booking -->
 <div class="container mt-4 border pdt">
   <h3 class="service text-capitalize">ĐẶT LỊCH NGAY</h3>
@@ -14,20 +35,25 @@
 
     </div>
     <div class="col-8 align-items-left d-flex justify-content-left ps-5">
-      <form style="width:50%" method="post" class="align-items-center"
-        action="index.php?controller=book&action=create&id=" name=" booking_form">
+      <form style="width:50%" method="post" class="align-items-center" action="{{ route('user.bookCreate') }}"
+        name=" booking_form">
+        @csrf
+        @method('post')
         <div class="form-group">
-          <h6 class="text-center">Thông tin của Boss</h6>
+          @if (!Auth('customer')->check())
+          <p><a style="text-decoration:none" href="{{ route('user.login') }}">Vui lòng đăng nhập tài khoản để đặt
+              lịch</a> </p>
+          @endif
           <i class="text-danger">Vui lòng điền đầy đủ thông tin !</i>
           <br>
           <label for="Bossname">Tên của Boss</label>
-          <input type="text" class="form-control bossname" id="Bossname" name="Bossname" placeholder="Nhập tên của boss"
+          <input type="text" class="form-control bossname" id="Bossname" name="name" placeholder="Nhập tên của boss"
             required>
 
         </div>
         <div class="form-group">
           <label for="Bosstype">Boss là: </label>
-          <input type="text" class="form-control" id="Bosstype" required name="Bosstype" placeholder="Chó, mèo ">
+          <input type="text" class="form-control" id="Bosstype" required name="type" placeholder="Chó, mèo ">
 
         </div>
         <div class="form-group">
@@ -52,7 +78,7 @@
         </div>
         <div class="form-group">
           <label for="Bossweight">Ghi chú (nếu có): </label>
-          <input type="text" class="form-control" id="Bossweight" required name="note" style="height:100px">
+          <input type="text" class="form-control" id="Bossweight" name="note" style="height:100px">
         </div>
         <div class="align-items-center d-flex justify-content-center">
           <button type="submit" class="btn btn-danger mt-3 submit_booking mb-2">

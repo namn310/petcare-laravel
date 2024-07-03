@@ -1,9 +1,12 @@
 <?php
+use Illuminate\Support\Facades\DB;
+use App\Models\product;
 if(session('cart')){
     $total = 0;
         foreach (session('cart') as $row) {
             $total += 1;
         }   }
+$product=product::select()->get();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,11 +128,14 @@ if(session('cart')){
                             <small><i class="fa-solid fa-user"></i> {{ Auth::guard('customer')->user()->name }}</small>
                         </a>
                         <ul class="dropdown-menu" style="left: 1280px;top: 55px;">
+                            <li><a class="dropdown-item" href="{{ route('user.orderView') }}"><i
+                                        class="fa-solid fa-cart-shopping pe-2" style="color: #cf1717;"></i>Đơn hàng</a>
+                            </li>
                             <li>
                                 @csrf<a class="dropdown-item" href="{{ route('user.infor') }}"><i
-                                        class="fa-regular fa-user text-primary pe-2"></i>Cài đặt</a></li>
+                                        class="fa-solid fa-gear pe-2"></i>Cài đặt</a></li>
                             <li><a class="dropdown-item" href="{{ route('user.changePassForm') }}"><i
-                                        class="fa-regular fa-user text-primary pe-2"></i>Đổi mật khẩu</a></li>
+                                        class="fa-solid fa-key pe-2 text-primary"></i>Đổi mật khẩu</a></li>
 
 
 
@@ -168,30 +174,27 @@ if(session('cart')){
             </div>
 
         </div>
-        {{-- <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center">
             <div id="list-search-product" class="d-flex text-center mt-1 flex-wrap"
                 style="overflow-y:visible;overflow-x:hidden;max-height:300px;width:400px">
-                <?php
-                foreach ($result as $row) {
-                ?>
+
+                @foreach ($product as $row)
+
                 <div class="listPro bg-white" style="display:none">
                     <div style="border-bottom:1px solid black;height:50px;width:400px;padding-left:10px;padding-right:20px "
                         class="d-flex justify-content-start bg-white ">
-                        <a style="text-decoration:none"
-                            href="index.php?controller=product&action=detail&id=<?php echo $row->idPro ?>"> <img
-                                src="../Project-petcare-php/assets/img-add-pro/<?php echo $row->hinhanh ?>"
-                                class="img-fluid" style="max-width:100%;height:100%"></a>
+                        <a style="text-decoration:none" href="{{ route('user.productDetail',['id'=>$row->idPro]) }}"> <img
+                                src="{{ asset('assets/img-add-pro/'.$row->getImgProduct($row->idPro)) }}" class="img-fluid"
+                                style="max-width:100%;height:100%"></a>
                         <p id="product-name-search" class="ms-3">
-                            <?php echo $row->namePro ?>
+                            {{ $row->namePro }}
                         </p>
                     </div>
                 </div>
-                <?php
-                }
-                ?>
+                @endforeach
             </div>
         </div>
-        --}}
+
     </div>
     @yield('content');
     <script>

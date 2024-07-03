@@ -37,22 +37,22 @@ class product extends Model
         }
         $product->save();
         if ($files = $request->file('imagepro')) {
+
             foreach ($files as $file) {
+
                 $extension = $file->getClientOriginalExtension(); //lay tep mo rong cua file
                 $filename =  time() . '.' . $extension;
-                $file->move('assets/img-add-pro', $filename);
-                // $product->image = $filename;
-                // $img = ['img' => $filename];
-                //array_push($imageProduct, $img)
-                // $imageProduct[] = $img;
-                $imageProduct = new ImageProduct();
-                $imageProduct->idPro = $product->idPro;
-                $imageProduct->image = $filename;
+                $file->move('assets/img-add-pro/', $filename);
+                $imageProduct = ImageProduct::create([
+                    'idPro' => $product->idPro,
+                    'image' => $filename
+                ]);
+
                 // $imageProduct = ImageProduct::create([
                 //     'idPro' => $lastProduct,
                 //     'image' => $filename,
                 // ]);
-                $imageProduct->save();
+                // $imageProduct->save();
             }
 
             // foreach ($imageProduct as $row) {
@@ -81,7 +81,6 @@ class product extends Model
         if ($files = $request->file('imagepro')) {
             foreach ($files as $file) {
                 foreach ($imgProduct as $result) {
-                   
                     if (File::exists(asset('assets/img-add-pro/' . $result->image))) {
                         File::delete(asset('assets/img-add-pro/' . $result->image));
                     }
@@ -125,5 +124,12 @@ class product extends Model
     {
         $img = ImageProduct::select('image')->where('idPro', $id)->get();
         return $img;
+    }
+    public function getProductName($id)
+    {
+        $product = DB::table('products')->select("namePro")->where('idPro', $id)->get();
+        foreach ($product as $row) {
+            return $row->namePro;
+        }
     }
 }

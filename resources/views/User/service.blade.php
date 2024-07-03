@@ -13,7 +13,7 @@
     <h4>Bảng giá dịch vụ</h4>
     <img class="img-fluid" src="{{ asset('assets/img-dichvu/'.$row->image) }}">
     <button type="button" class="btn btn-danger mt-3"><a style="text-decoration: none;color:white"
-        href="index.php?controller=book">Đăng ký ngay</a></button>
+        href="{{ route('user.book') }}">Đăng ký ngay</a></button>
     <hr>
   </div>
 

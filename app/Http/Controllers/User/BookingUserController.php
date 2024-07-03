@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class BookingUserController extends Controller
 {
-    //
+    public function index(){
+        return view('User.booking');
+    }
 }

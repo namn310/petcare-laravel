@@ -20,8 +20,8 @@ class OrderController extends Controller
     }
     public function detail($id)
     {
-        $product = new OrderDetail();
-        $totalPrice = $product->getTotalCost();
+        $product = new Order();
+        $totalPrice = $product->getTotalCost($id);
         $OrderDetail = OrderDetail::select()->where('idOrder', $id)->get();
         $Order = Order::select()->where('id', $id)->get();
         // $Order = Order::find($id)->get();
